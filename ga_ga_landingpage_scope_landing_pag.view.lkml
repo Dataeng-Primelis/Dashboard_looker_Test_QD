@@ -1,69 +1,81 @@
-view: ga_ga_landingpage_scope_landing_pag {
-  # # You can specify the table name if it's different from the view name:
-  # sql_table_name: my_schema_name.tester ;;
-  #
-  # # Define your dimensions and measures here, like this:
-  # dimension: user_id {
-  #   description: "Unique ID for each user that has ordered"
-  #   type: number
-  #   sql: ${TABLE}.user_id ;;
-  # }
-  #
-  # dimension: lifetime_orders {
-  #   description: "The total number of orders for each user"
-  #   type: number
-  #   sql: ${TABLE}.lifetime_orders ;;
-  # }
-  #
-  # dimension_group: most_recent_purchase {
-  #   description: "The date when each user last ordered"
-  #   type: time
-  #   timeframes: [date, week, month, year]
-  #   sql: ${TABLE}.most_recent_purchase_at ;;
-  # }
-  #
-  # measure: total_lifetime_orders {
-  #   description: "Use this for counting lifetime orders across many users"
-  #   type: sum
-  #   sql: ${lifetime_orders} ;;
-  # }
-}
+view: ga_landing_page {
+  sql_table_name: `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*`;;
 
-# view: ga_ga_landingpage_scope_landing_pag {
-#   # Or, you could make this view a derived table, like this:
-#   derived_table: {
-#     sql: SELECT
-#         user_id as user_id
-#         , COUNT(*) as lifetime_orders
-#         , MAX(orders.created_at) as most_recent_purchase_at
-#       FROM orders
-#       GROUP BY user_id
-#       ;;
-#   }
-#
-#   # Define your dimensions and measures here, like this:
-#   dimension: user_id {
-#     description: "Unique ID for each user that has ordered"
-#     type: number
-#     sql: ${TABLE}.user_id ;;
-#   }
-#
-#   dimension: lifetime_orders {
-#     description: "The total number of orders for each user"
-#     type: number
-#     sql: ${TABLE}.lifetime_orders ;;
-#   }
-#
-#   dimension_group: most_recent_purchase {
-#     description: "The date when each user last ordered"
-#     type: time
-#     timeframes: [date, week, month, year]
-#     sql: ${TABLE}.most_recent_purchase_at ;;
-#   }
-#
-#   measure: total_lifetime_orders {
-#     description: "Use this for counting lifetime orders across many users"
-#     type: sum
-#     sql: ${lifetime_orders} ;;
-#   }
-# }
+  measure: count {
+    hidden: yes
+    type: count
+    drill_fields: [detail*]
+  }
+
+  dimension: date {
+    type: date
+    datatype: date
+    sql: ${TABLE}.date ;;
+  }
+
+  dimension: device_category {
+    type: string
+    sql: ${TABLE}.device_category ;;
+  }
+
+  dimension: landing_page_path {
+    type: string
+    sql: ${TABLE}.landing_page_path ;;
+  }
+
+  dimension: medium {
+    type: string
+    sql: ${TABLE}.medium ;;
+  }
+
+  dimension: source {
+    type: string
+    sql: ${TABLE}.source ;;
+  }
+
+  dimension: bounces {
+    type: number
+    sql: ${TABLE}.bounces ;;
+  }
+
+  dimension: session {
+    type: number
+    sql: ${TABLE}.session ;;
+  }
+
+  dimension: transaction_revenue {
+    type: number
+    sql: ${TABLE}.transaction_revenue ;;
+  }
+
+  dimension: transaction {
+    type: number
+    sql: ${TABLE}.transaction ;;
+  }
+
+  dimension: transaction_shipping {
+    type: number
+    sql: ${TABLE}.transaction_shipping ;;
+  }
+
+  dimension: transaction_tax {
+    type: number
+    sql: ${TABLE}.transaction_tax ;;
+  }
+
+  set: detail {
+    fields: [
+      date,
+      device_category,
+      landing_page_path,
+      medium,
+      source,
+      bounces,
+      session,
+      transaction_revenue,
+      transaction,
+      transaction_shipping,
+      transaction_tax
+    ]
+  }
+}
