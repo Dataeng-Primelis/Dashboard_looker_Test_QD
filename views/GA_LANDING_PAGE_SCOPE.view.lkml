@@ -1,5 +1,5 @@
-view: ga_landing_page {
-  sql_table_name: `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*`;;
+view: ga_landing_page_scope {
+  sql_table_name:  `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*` ;;
 
   measure: count {
     hidden: yes
