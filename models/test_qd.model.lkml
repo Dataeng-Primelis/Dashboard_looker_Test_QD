@@ -1,4 +1,4 @@
-connection: "dossier_-_bigquery"
+connection: "galerie_lafayette_bq"
 
 datagroup: test_qd_default_datagroup {
   # sql_trigger: SELECT MAX(id) FROM etl_log;;
