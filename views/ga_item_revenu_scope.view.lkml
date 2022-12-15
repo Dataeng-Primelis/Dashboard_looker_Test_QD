@@ -1,6 +1,13 @@
 view: ga_item_revenu_scope {
   sql_table_name:  `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_ITEMREVENU_SCOPE_PRODUCT_*`;;
 
+  dimension: pk {
+    hidden: yes
+    primary_key: yes
+    type: string
+    sql: concat(${date_date},${device_category},${medium},${source},${product_category_hierarchy},${product_name}) ;;
+  }
+
   dimension_group: date {
     label: "Sessions Date"
     description: "Date of the sessions (YYYY-MM-DD)"
