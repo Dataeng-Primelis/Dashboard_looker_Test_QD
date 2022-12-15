@@ -164,7 +164,7 @@ view: ga_landing_page_scope {
 
   measure: total_bounces {
     label: "Total Bounces"
-    description: "Sum of Total bounces"
+    description: "Sum of Total Bounces"
     type: sum
     sql: ${TABLE}.bounces ;;
   }

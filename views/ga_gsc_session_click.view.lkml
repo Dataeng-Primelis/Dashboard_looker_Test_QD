@@ -6,24 +6,19 @@ view: ga_gsc_session_click {
             FROM (
               SELECT date ,sum(session) session
               FROM `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*`
+              WHERE source = "google" AND medium = "organic"
               GROUP BY 1) as ga
-            , (
+            LEFT JOIN (
               SELECT date, sum(clicks) clicks
               FROM `galeries-lafayette-dashboard.source_supermetrics.SEARCHCONSOLE_STANDARD_*`
               GROUP BY 1) as gsc
-            where ga.date=gsc.date
+            ON ga.date=gsc.date
              ;;
   }
 
-  measure: count {
-    type: count
-    hidden: yes
-    drill_fields: []
-  }
-
   dimension_group: date {
-    label: "Date"
-    description: "Date (YYYY-MM-DD)"
+    label: "Sessions Date"
+    description: "Date of the sessions (YYYY-MM-DD)"
     type: time
     timeframes: [
       raw,
@@ -35,21 +30,44 @@ view: ga_gsc_session_click {
       year,
       time
     ]
+    convert_tz: no
     datatype: date
     sql: ${TABLE}.date ;;
   }
 
   dimension: session {
+    label: "Sessions"
+    description: "The number of sessions"
     type: number
     sql: ${TABLE}.session ;;
   }
 
   dimension: clicks {
+    label: "Clicks"
+    description: "The number of clicks"
     type: number
     sql: ${TABLE}.clicks ;;
   }
 
-  # set: detail {
-  #   fields: [date, session, clicks]
-  # }
+### KPI measures
+
+  measure: count {
+    type: count
+    drill_fields: []
+  }
+
+  measure: total_sessions {
+    label: "Total Sessions"
+    description: "Sum of Total Sessions"
+    type: sum
+    sql: ${TABLE}.session ;;
+  }
+
+  measure: total_clicks {
+    label: "Total Clicks"
+    description: "Sum of Total Clicks"
+    type: sum
+    sql: ${TABLE}.clicks ;;
+  }
+
 }
