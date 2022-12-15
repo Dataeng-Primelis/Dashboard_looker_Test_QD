@@ -55,15 +55,4 @@ view: ga_item_revenu_scope {
     sql: ${TABLE}.item_revenue ;;
   }
 
-  # set: detail {
-  #   fields: [
-  #     date,
-  #     device_category,
-  #     medium,
-  #     product_category_hierarchy,
-  #     product_name,
-  #     source,
-  #     item_revenue
-  #   ]
-  # }
 }

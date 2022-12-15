@@ -12,7 +12,6 @@ view: ga_gsc_session_click {
               FROM `galeries-lafayette-dashboard.source_supermetrics.SEARCHCONSOLE_STANDARD_*`
               GROUP BY 1) as gsc
             where ga.date=gsc.date
-            limit 100
              ;;
   }
 
