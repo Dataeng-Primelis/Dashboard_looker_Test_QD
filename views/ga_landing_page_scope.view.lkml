@@ -4,7 +4,7 @@ view: ga_landing_page_scope {
   measure: count {
     hidden: yes
     type: count
-    drill_fields: [detail*]
+    drill_fields: []
   }
 
   dimension: date {
@@ -63,19 +63,19 @@ view: ga_landing_page_scope {
     sql: ${TABLE}.transaction_tax ;;
   }
 
-  set: detail {
-    fields: [
-      date,
-      device_category,
-      landing_page_path,
-      medium,
-      source,
-      bounces,
-      session,
-      transaction_revenue,
-      transaction,
-      transaction_shipping,
-      transaction_tax
-    ]
-  }
+  # set: detail {
+  #   fields: [
+  #     date,
+  #     device_category,
+  #     landing_page_path,
+  #     medium,
+  #     source,
+  #     bounces,
+  #     session,
+  #     transaction_revenue,
+  #     transaction,
+  #     transaction_shipping,
+  #     transaction_tax
+  #   ]
+  # }
 }
