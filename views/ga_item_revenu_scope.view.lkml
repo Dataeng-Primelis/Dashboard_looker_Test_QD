@@ -7,8 +7,20 @@ view: ga_item_revenu_scope {
     drill_fields: []
   }
 
-  dimension: date {
-    type: date
+  dimension_group: date {
+    label: "Date"
+    description: "Date (YYYY-MM-DD)"
+    type: time
+    timeframes: [
+      raw,
+      date,
+      week,
+      month,
+      month_name,
+      quarter,
+      year,
+      time
+    ]
     datatype: date
     sql: ${TABLE}.date ;;
   }
