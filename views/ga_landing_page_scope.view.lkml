@@ -1,14 +1,15 @@
 view: ga_landing_page_scope {
   sql_table_name:  `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*` ;;
 
-  measure: count {
+  dimension: pk {
     hidden: yes
-    type: count
-    drill_fields: []
+    primary_key: yes
+    type: string
+    sql: concat(${date_date},${source},${medium},${device_category},${landing_page_path}) ;;
   }
 
   dimension_group: date {
-    label: "Date"
+    label: "Sessions Date"
     description: "Date of the sessions (YYYY-MM-DD)"
     type: time
     timeframes: [
@@ -21,6 +22,7 @@ view: ga_landing_page_scope {
       year,
       time
     ]
+    convert_tz: no
     datatype: date
     sql: ${TABLE}.date ;;
   }
@@ -95,7 +97,71 @@ view: ga_landing_page_scope {
     sql: ${TABLE}.transaction_tax ;;
   }
 
+### Customized dimensions
+  dimension: ga_univers_catalog_lv1 {
+    label: "Universal Catalog Lvl 1"
+    description: "Universal catalog on 1st level : Femme / Homme / Enfant / Beauté / Maison / Autre"
+    type: string
+    sql: CASE WHEN REGEXP_CONTAINS(${landing_page_path},"(.*/c/femme.*|.*/h/femme.*)") THEN "Femme"
+              WHEN REGEXP_CONTAINS(${landing_page_path},"/(c|h)/homme") THEN "Homme"
+              WHEN REGEXP_CONTAINS(${landing_page_path},"/(c|h)/enfant") THEN "Enfant"
+              WHEN REGEXP_CONTAINS(${landing_page_path},"/(c|h)/beaute") THEN "Beauté"
+              WHEN REGEXP_CONTAINS(${landing_page_path},"/(c|h)/maison") THEN "Maison"
+              ELSE "Autre"
+          END;;
+  }
+
+  dimension: ga_univers_catalog_lv2 {
+    label: "Universal Catalog Lvl 2"
+    description: "Universal catalog on 2nd level"
+    type: string
+    sql: CASE WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/vetements") THEN "Vêtements"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/chaussures") THEN "Chaussures"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/sacs") THEN "Sacs & Bagages"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/accessoires") THEN "Accessoires"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/bain") THEN "Bain & Maillots"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/lingerie") THEN "Lingerie"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/femme/homewear") THEN "Homewear"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/vetements.*") THEN "Vêtements"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/chaussures.*") THEN "Chaussures"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/sacs.*") THEN "Sacs & Bagages"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/accessoires.*") THEN "Accessoires"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/bain.*") THEN "Bain & Maillots"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/sous-vetements.*") THEN "Lingerie"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/homme/homewear.*") THEN "Homewear"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/enfant/garcon") THEN "Garçon"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/enfant/fille") THEN "Fille"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/enfant/bebe") THEN "Bébé"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/enfant/puericulture") THEN "Puériculture"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/enfant/jeux-jouets") THEN "Jeux & jouets"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/parfum") THEN "Parfum"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/soin") THEN "Soin - Générique"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/soin/soin-du-visage") THEN "Soin du visage"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/soin/soins-du-corps") THEN "Soin du corps"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/soin/soins-cheveux") THEN "Soin des cheveux"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/soin/solaires") THEN "Soin solaire"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/bebe") THEN "Maquillage"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/les+coffrets+beaute") THEN "Les Coffrets Beauté"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/beaute/parfum/bougies-parfumees") THEN "Bougies Parfumées"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/accessoires+de+soin") THEN "Accessoires de soin"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/complements+alimentaires") THEN "Compléments alimentaires"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/linge") THEN "Linge"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/meubles") THEN "Meubles"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/luminaires") THEN "Luminaires"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/cuisine") THEN "Cuisine & Arts de la table"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/electromenager") THEN "Électroménager"
+              WHEN REGEXP_CONTAINS(landing_page_path,"/c/maison/multimedia") THEN "Multimédia"
+              ELSE "Autre"
+          END;;
+  }
+
 ### KPI measures
+
+  measure: count {
+    type: count
+    drill_fields: []
+  }
+
   measure: total_bounces {
     label: "Total Bounces"
     description: "Sum of Total bounces"
