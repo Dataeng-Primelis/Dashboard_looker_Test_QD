@@ -7,7 +7,7 @@ include: "/views/*.lkml"
 datagroup: ga_gsc_sc_check {
   label : "New days added"
   description: "Triggered when new days is added to ga_gsc_session_click views and kept for 1 day"
-  sql_trigger: SELECT MAX(date) FROM ga_gsc_session_click;;
+  sql_trigger: SELECT MAX(date) FROM ga_gsc_session_click_seo;;
   max_cache_age: "24 hours"
 }
 

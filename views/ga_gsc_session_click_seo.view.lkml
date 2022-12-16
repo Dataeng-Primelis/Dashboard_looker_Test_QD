@@ -1,4 +1,4 @@
-view: ga_gsc_session_click {
+view: ga_gsc_session_click_seo {
   derived_table: {
     sql: SELECT coalesce(ga.date,gsc.date) date
             , session
