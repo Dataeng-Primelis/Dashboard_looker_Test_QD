@@ -98,6 +98,15 @@ view: ga_landing_page_scope {
   }
 
 ### Customized dimensions
+  dimension: source_medium_group {
+    label: "Source Medium Group"
+    description: "Source Medium: SEO / Autre"
+    type: string
+    sql: CASE WHEN REGEXP_CONTAINS(${source},"google") AND REGEXP_CONTAINS(${medium},"organic") THEN "SEO"
+              ELSE "Autre"
+          END;;
+  }
+
   dimension: ga_univers_catalog_lv1 {
     label: "Universal Catalog Lvl 1"
     description: "Universal catalog on 1st level : Femme / Homme / Enfant / Beauté / Maison / Autre"
@@ -159,6 +168,7 @@ view: ga_landing_page_scope {
 
   measure: count {
     type: count
+    hidden: yes
     drill_fields: []
   }
 

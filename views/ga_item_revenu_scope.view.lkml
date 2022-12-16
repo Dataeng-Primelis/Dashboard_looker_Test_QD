@@ -5,7 +5,7 @@ view: ga_item_revenu_scope {
     hidden: yes
     primary_key: yes
     type: string
-    sql: concat(${date_date},${device_category},${medium},${source},${product_category_hierarchy},${product_name}) ;;
+    sql: GENERATE_UUID() ;;
   }
 
   dimension_group: date {
@@ -92,6 +92,7 @@ view: ga_item_revenu_scope {
 
   measure: count {
     type: count
+    hidden: yes
     drill_fields: []
   }
 
