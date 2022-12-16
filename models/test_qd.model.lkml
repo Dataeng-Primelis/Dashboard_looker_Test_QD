@@ -24,3 +24,6 @@ datagroup: ga_landing_page_scope_check {
   sql_trigger: SELECT MAX(date) FROM ga_landing_page_scope;;
   max_cache_age: "24 hours"
 }
+
+named_value_format: large_eur { value_format: "[>=1000000]\"$\"0.00,,\"M\";[>=1000]\"$\"0.00,\"K\";\"$\"0.00" }
+named_value_format: large_number { value_format: "[>=1000000]0.00,,\"M\";[>=1000]0.00,\"K\";0" }

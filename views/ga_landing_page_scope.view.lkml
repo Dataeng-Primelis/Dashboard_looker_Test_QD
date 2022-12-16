@@ -177,6 +177,7 @@ view: ga_landing_page_scope {
     description: "Sum of Total Bounces"
     type: sum
     sql: ${TABLE}.bounces ;;
+    value_format: "#,##0"
   }
 
   measure: total_sessions {
@@ -184,6 +185,7 @@ view: ga_landing_page_scope {
     description: "Sum of Total Sessions"
     type: sum
     sql: ${TABLE}.session ;;
+    value_format: "#,##0"
   }
 
   measure: total_transaction_revenues {
@@ -199,6 +201,7 @@ view: ga_landing_page_scope {
     description: "Sum of Total Conversions"
     type: sum
     sql: ${TABLE}.transaction ;;
+    value_format: "#,##0"
   }
 
   measure: total_transaction_shipping {

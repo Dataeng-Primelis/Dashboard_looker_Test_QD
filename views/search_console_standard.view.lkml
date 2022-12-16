@@ -194,6 +194,7 @@ view: search_console_standard {
     description: "Sum of Total Clicks"
     type: sum
     sql: ${TABLE}.clicks ;;
+    value_format: "#,##0"
   }
 
   measure: totalimpressions {
@@ -201,6 +202,7 @@ view: search_console_standard {
     description: "Sum of Total Impressions"
     type: sum
     sql: ${TABLE}.impressions ;;
+    value_format: "#,##0"
   }
 
 }
