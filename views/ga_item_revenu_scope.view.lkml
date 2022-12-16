@@ -99,7 +99,7 @@ view: ga_item_revenu_scope {
     hidden: yes
     type: string
     sql: case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Period'
-                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
+                when ${date_date} >= (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
                 and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day )) then 'Previous Period'
             end;;
   }
@@ -111,7 +111,7 @@ view: ga_item_revenu_scope {
     hidden: yes
     type: string
     sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Year '
-                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
+                when ${date_date} >= (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
                  and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then 'Previous Year'
            end ;;
   }
@@ -178,7 +178,7 @@ view: ga_item_revenu_scope {
           case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then
                 concat(' From ',FORMAT_DATE("%d-%b-%Y", TIMESTAMP ${start_date_current_period_year})
                       ,' To ',FORMAT_DATE("%d-%b-%Y", TIMESTAMP ${end_date_current_period_year}))
-                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
+                when ${date_date} >= (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
                 and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day )) then
                 concat(' From ',FORMAT_TIMESTAMP("%d-%b-%Y", TIMESTAMP ${start_date_previous_period})
                         ,' To ',FORMAT_TIMESTAMP("%d-%b-%Y", TIMESTAMP ${end_date_previous_period}))
@@ -187,7 +187,7 @@ view: ga_item_revenu_scope {
           case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then
            concat(' From ',FORMAT_DATE("%d-%b-%Y", TIMESTAMP ${start_date_current_period_year})
                       ,' To ',FORMAT_DATE("%d-%b-%Y", TIMESTAMP ${end_date_current_period_year}))
-                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
+                when ${date_date} >= (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
                  and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then
                 concat(' From ',FORMAT_TIMESTAMP("%d-%b-%Y", TIMESTAMP ${start_date_previous_year})
                         ,' To ',FORMAT_TIMESTAMP("%d-%b-%Y", TIMESTAMP ${end_date_previous_year}))
