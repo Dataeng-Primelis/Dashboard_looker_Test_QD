@@ -9,7 +9,7 @@ view: ga_item_revenu_scope {
   }
 
   dimension_group: date {
-    label: "Sessions Date"
+    label: " Sessions"
     description: "Date of the sessions (YYYY-MM-DD)"
     type: time
     timeframes: [

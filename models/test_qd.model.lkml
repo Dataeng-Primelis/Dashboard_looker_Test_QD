@@ -4,10 +4,10 @@ include: "/explores/*.explore"
 include: "/views/*.lkml"
 
 ### Customized Datagroup
-datagroup: ga_gsc_sc_check {
+datagroup: search_console_standard_check {
   label : "New days added"
-  description: "Triggered when new days is added to ga_gsc_session_click views and kept for 1 day"
-  sql_trigger: SELECT MAX(date) FROM ga_gsc_session_click_seo;;
+  description: "Triggered when new days is added to searchconsole_standard views and kept for 1 day"
+  sql_trigger: SELECT MAX(date) FROM search_console_standard;;
   max_cache_age: "24 hours"
 }
 
