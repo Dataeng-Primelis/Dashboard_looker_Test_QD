@@ -14,7 +14,9 @@ view: ga_gsc_session_click {
               GROUP BY 1) as gsc
             ON ga.date=gsc.date
              ;;
+    datagroup_trigger: ga_gsc_sc_check
   }
+
 
   dimension_group: date {
     label: "Sessions Date"
