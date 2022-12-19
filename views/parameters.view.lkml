@@ -4,16 +4,21 @@ view: parameters {
     type: date
   }
 
-  parameter: previous_comparison {
-    label: "Comparaison Date Range"
-    description: "Compare your selected period to the same period in the previous year"
+  parameter: compare_to {
+    label: "Date Range Comparison"
+    description: "Select the templated previous period you would like to compare to"
     type: unquoted
-    default_value: "previous_year"
+    default_value: "previous_period"
+    allowed_value: {
+      value: "previous_period"
+      label: "vs Previous Period"
+    }
     allowed_value: {
       value: "previous_year"
       label: "vs Previous Year"
     }
   }
+
 
   dimension_group: days_in_period {
     hidden: yes

@@ -1,5 +1,7 @@
+include: "/views/common_metrics.view"
 view: search_console_standard {
   sql_table_name: `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.SEARCHCONSOLE_STANDARD_*`;;
+  extends: [common_metrics]
 
   dimension: pk {
     hidden: yes
@@ -190,20 +192,6 @@ view: search_console_standard {
     drill_fields: []
   }
 
-  measure: total_clicks {
-    label: "Total Clicks"
-    description: "Sum of Total Clicks"
-    type: sum
-    sql: ${TABLE}.clicks ;;
-    value_format: "#,##0"
-  }
 
-  measure: totalimpressions {
-    label: "Total Impressions"
-    description: "Sum of Total Impressions"
-    type: sum
-    sql: ${TABLE}.impressions ;;
-    value_format: "#,##0"
-  }
 
 }

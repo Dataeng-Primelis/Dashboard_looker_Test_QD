@@ -1,5 +1,8 @@
+include: "/views/common_metrics.view"
 view: ga_landing_page_scope {
   sql_table_name:  `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_LANDINGPAGE_SCOPE_LANDING_PAG_*` ;;
+  extends: [common_metrics]
+
 
   dimension: pk {
     hidden: yes
@@ -173,77 +176,47 @@ view: ga_landing_page_scope {
     drill_fields: []
   }
 
-  measure: total_bounces {
-    label: "Total Bounces"
-    description: "Sum of Total Bounces"
-    type: sum
-    sql: ${TABLE}.bounces ;;
-    value_format: "#,##0"
+### Period Analysis:
+
+  # The common parameters and filters are located in the parameters view file.
+  # This dimension creates the interval related to the current period and the previous period.
+  dimension: current_vs_previous {
+    label: "Current vs Previous Period"
+    description: "Compare current date period versus previous period"
+    hidden: yes
+    type: string
+    sql: case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Period'
+                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
+                and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day )) then 'Previous Period'
+            end;;
   }
 
-  measure: total_sessions {
-    label: "Total Sessions"
-    description: "Sum of Total Sessions"
-    type: sum
-    sql: ${TABLE}.session ;;
-    value_format: "#,##0"
+# This dimension creates the interval related to the current period and the previous year period.
+  dimension: current_year_vs_previous_year {
+    label: "Current Year vs Previous Year"
+    description: "Compare current year period versus year"
+    hidden: yes
+    type: string
+    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Year '
+                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
+                 and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then 'Previous Year'
+           end ;;
   }
 
-  measure: total_transaction_revenues {
-    label: "Total Conversion Revenues"
-    description: "Sum of Total Conversion Revenues"
-    type: sum
-    sql: ${TABLE}.transaction_revenue ;;
-    value_format_name: eur_0
+
+  # This dimension is the one that should be selected in the explore/dashboard tile that's depend on the user's choice will show
+  # the comparison between Previous Period or Previous Year Same period.
+  dimension: selected_period {
+    view_label: "Parameters"
+    description: "Select date comparison type"
+    type: string
+    sql: {% if parameters.previous_comparison._parameter_value == 'previous_period'%} ${current_vs_previous}
+          {% elsif parameters.previous_comparison._parameter_value == 'previous_year' %} ${current_year_vs_previous_year}
+          {% else %} ${current_vs_previous}
+          {% endif %}
+     ;;
   }
 
-  measure: total_transactions {
-    label: "Total Conversions"
-    description: "Sum of Total Conversions"
-    type: sum
-    sql: ${TABLE}.transaction ;;
-    value_format: "#,##0"
-  }
-
-  measure: total_transaction_shipping {
-    label: "Total Shipping Cost"
-    description: "Sum of Total Shipping Cost for the conversions"
-    type: sum
-    sql: ${TABLE}.transaction_shipping ;;
-    value_format_name: eur_0
-  }
-
-  measure: total_transaction_tax {
-    label: "Total Conversion Tax"
-    description: "Sum of Total Taxes for the conversions"
-    type: sum
-    sql: ${TABLE}.transaction_tax ;;
-    value_format_name: eur_0
-  }
-
-  measure: bounce_rate {
-    label: "Bounce Rate"
-    description: "Total Bounces / Total Sessions"
-    type: number
-    sql: nullif(${total_bounces},0)/nullif(${total_sessions},0) ;;
-    value_format: "0.00%"
-  }
-
-  measure: conversion_rate {
-    label: "Conversion Rate"
-    description: "Total Transactions / Total Sessions"
-    type: number
-    sql: nullif(${total_transactions},0)/nullif(${total_sessions},0) ;;
-    value_format: "0.00%"
-  }
-
-  measure: aov {
-    label: "Average Order Values"
-    description: "Total Revenues / Total Conversions"
-    type: number
-    sql: nullif(${total_transaction_revenues},0)/nullif(${total_transactions},0) ;;
-    value_format_name: eur_0
-  }
-
+  ###---- End of Period Analysis
 
 }

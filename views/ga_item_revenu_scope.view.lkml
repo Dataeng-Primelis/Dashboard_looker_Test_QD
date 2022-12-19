@@ -1,5 +1,7 @@
+include: "/views/common_metrics.view"
 view: ga_item_revenu_scope {
   sql_table_name:  `galeries-lafayette-dashboard.source_supermetrics_dashboard_seo.GA_GA_ITEMREVENU_SCOPE_PRODUCT_*`;;
+  extends: [common_metrics]
 
   dimension: pk {
     hidden: yes
@@ -97,12 +99,5 @@ view: ga_item_revenu_scope {
     drill_fields: []
   }
 
-  measure: total_item_revenues {
-    label: "Total Product Revenues"
-    description: "Sum of Total Product Item Revenues"
-    type: sum
-    sql: ${TABLE}.item_revenue ;;
-    value_format_name: eur_0
-  }
 
 }
