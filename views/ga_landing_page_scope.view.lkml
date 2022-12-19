@@ -185,7 +185,7 @@ view: ga_landing_page_scope {
     description: "Compare current date period versus previous period"
     hidden: yes
     type: string
-    sql: case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Period'
+    sql: case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then ' Current Period'
                 when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
                 and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day )) then 'Previous Period'
             end;;
@@ -197,7 +197,7 @@ view: ga_landing_page_scope {
     description: "Compare current year period versus year"
     hidden: yes
     type: string
-    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Year '
+    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then ' Current Year '
                 when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
                  and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then 'Previous Year'
            end ;;
@@ -210,8 +210,8 @@ view: ga_landing_page_scope {
     view_label: "Parameters"
     description: "Select date comparison type"
     type: string
-    sql: {% if parameters.previous_comparison._parameter_value == 'previous_period'%} ${current_vs_previous}
-          {% elsif parameters.previous_comparison._parameter_value == 'previous_year' %} ${current_year_vs_previous_year}
+    sql: {% if parameters.compare_to._parameter_value == 'previous_period' %} ${current_vs_previous}
+          {% elsif parameters.compare_to._parameter_value == 'previous_year' %} ${current_year_vs_previous_year}
           {% else %} ${current_vs_previous}
           {% endif %}
      ;;
