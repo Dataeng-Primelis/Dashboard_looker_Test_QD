@@ -99,5 +99,47 @@ view: ga_item_revenu_scope {
     drill_fields: []
   }
 
+### Period Analysis:
+
+  # The common parameters and filters are located in the parameters view file.
+  # This dimension creates the interval related to the current period and the previous period.
+  dimension: current_vs_previous {
+    label: "Current vs Previous Period"
+    description: "Compare current date period versus previous period"
+    hidden: yes
+    type: string
+    sql: case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then ' Current Period'
+                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day ))
+                and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL ${parameters.days_days_in_period} day )) then 'Previous Period'
+            end;;
+  }
+
+# This dimension creates the interval related to the current period and the previous year period.
+  dimension: current_year_vs_previous_year {
+    label: "Current Year vs Previous Year"
+    description: "Compare current year period versus year"
+    hidden: yes
+    type: string
+    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Year '
+                when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
+                 and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then 'Previous Year'
+           end ;;
+  }
+
+
+  # This dimension is the one that should be selected in the explore/dashboard tile that's depend on the user's choice will show
+  # the comparison between Previous Period or Previous Year Same period.
+  dimension: selected_period {
+    view_label: "Parameters"
+    description: "Select date comparison type"
+    type: string
+    sql: {% if parameters.compare_to._parameter_value == 'previous_period' %} ${current_vs_previous}
+          {% elsif parameters.compare_to._parameter_value == 'previous_year' %} ${current_year_vs_previous_year}
+          {% else %} ${current_vs_previous}
+          {% endif %}
+     ;;
+  }
+
+  ###---- End of Period Analysis
 
 }
