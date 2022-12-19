@@ -197,7 +197,7 @@ view: ga_landing_page_scope {
     description: "Compare current year period versus year"
     hidden: yes
     type: string
-    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then ' Current Year '
+    sql:  case when {% condition parameters.choose_date %} timestamp(${date_date}) {% endcondition %} then 'Current Year '
                 when ${date_date} > (date_sub(date({% date_start parameters.choose_date %}),INTERVAL 1 year ))
                  and ${date_date} <= (date_sub(date({% date_end parameters.choose_date %}),INTERVAL 1 year )) then 'Previous Year'
            end ;;
