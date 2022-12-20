@@ -1,6 +1,20 @@
 view: common_metrics {
 
+  measure: total_clicks {
+    label: "Total Clicks"
+    description: "Sum of Total Clicks"
+    type: sum
+    sql: ${TABLE}.clicks ;;
+    value_format: "#,##0"
+  }
 
+  measure: total_impressions {
+    label: "Total Impressions"
+    description: "Sum of Total Impressions"
+    type: sum
+    sql: ${TABLE}.impressions ;;
+    value_format: "#,##0"
+  }
 
   measure: total_bounces {
     label: "Total Bounces"
