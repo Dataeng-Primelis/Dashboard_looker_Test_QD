@@ -193,19 +193,42 @@ view: common_metrics {
     filters: [selected_period: "Current Year"]
   }
 
-measure: previous_transaction_revenue {
-  label: "Conversion Revenues of Previous Year"
-  type: sum
-  sql: ${TABLE}.transaction_revenue ;;
-  value_format_name : eur_0
-  filters: [selected_period: "Previous Year"]
-}
+  measure: previous_transaction_revenue {
+    label: "Conversion Revenues of Previous Year"
+    type: sum
+    sql: ${TABLE}.transaction_revenue ;;
+    value_format_name : eur_0
+    filters: [selected_period: "Previous Year"]
+  }
 
-measure: transaction_revenue_yoy_evol {
-  label: "YoY evol. Conversion Revenue"
-  type: number
-  sql: (nullif(${current_transaction_revenue},0)-nullif(${previous_transaction_revenue},0))/nullif(${previous_transaction_revenue},0) ;;
-  value_format: "0.00%"
-}
+  measure: transaction_revenue_yoy_evol {
+    label: "YoY evol. Conversion Revenue"
+    type: number
+    sql: (nullif(${current_transaction_revenue},0)-nullif(${previous_transaction_revenue},0))/nullif(${previous_transaction_revenue},0) ;;
+    value_format: "0.00%"
+  }
+
+  measure: current_item_revenue {
+    label: "Item Revenues of Current Year"
+    type: sum
+    sql: ${TABLE}.item_revenue ;;
+    value_format_name : eur_0
+    filters: [selected_period: "Current Year"]
+  }
+
+  measure: previous_item_revenue {
+    label: "Conversion Revenues of Previous Year"
+    type: sum
+    sql: ${TABLE}.item_revenue ;;
+    value_format_name : eur_0
+    filters: [selected_period: "Previous Year"]
+  }
+
+  measure: item_revenue_yoy_evol {
+    label: "YoY evol. Item Revenue"
+    type: number
+    sql: (nullif(${current_item_revenue},0)-nullif(${previous_item_revenue},0))/nullif(${previous_item_revenue},0) ;;
+    value_format: "0.00%"
+  }
 
 }
