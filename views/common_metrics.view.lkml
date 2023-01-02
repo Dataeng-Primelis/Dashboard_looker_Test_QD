@@ -119,7 +119,7 @@ view: common_metrics {
   filter: choose_date{
     #templated filter
     type: date
-    sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
+    #sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
   }
 
   parameter: compare_to {
@@ -138,9 +138,8 @@ view: common_metrics {
     }
   }
 
-
   dimension_group: days_in_period {
-    hidden: yes
+    hidden: no
     type: duration
     intervals: [day,month,year]
     sql_start:{% date_start choose_date %}  ;;
@@ -152,7 +151,7 @@ view: common_metrics {
     description: "Compare current date period versus previous period"
     hidden: yes
     type: string
-    sql: case when {% condition choose_date %} timestamp(${session_date}) {% endcondition %} then ' Current Period'
+    sql: case when {% condition choose_date %} timestamp(${session_date}) {% endcondition %} then 'Current Period'
                 when ${session_date} > (date_sub(date({% date_start choose_date %}),INTERVAL ${days_days_in_period} day ))
                 and ${session_date} <= (date_sub(date({% date_end choose_date %}),INTERVAL ${days_days_in_period} day )) then 'Previous Period'
             end;;
