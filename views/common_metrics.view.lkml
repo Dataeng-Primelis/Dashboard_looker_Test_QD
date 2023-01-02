@@ -217,7 +217,7 @@ view: common_metrics {
   }
 
   measure: previous_item_revenue {
-    label: "Conversion Revenues of Previous Year"
+    label: "Item Revenues of Previous Year"
     type: sum
     sql: ${TABLE}.item_revenue ;;
     value_format_name : eur_0
