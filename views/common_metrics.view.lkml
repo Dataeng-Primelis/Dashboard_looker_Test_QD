@@ -183,4 +183,29 @@ view: common_metrics {
      ;;
   }
 
+
+############### Period Comparaison Set Up #######################
+  measure: current_transaction_revenue {
+    label: "Conversion Revenues of Current Year"
+    type: sum
+    sql: ${TABLE}.transaction_revenue ;;
+    value_format_name : eur_0
+    filters: [selected_period: "Current Year"]
+  }
+
+measure: previous_transaction_revenue {
+  label: "Conversion Revenues of Previous Year"
+  type: sum
+  sql: ${TABLE}.transaction_revenue ;;
+  value_format_name : eur_0
+  filters: [selected_period: "Previous Year"]
+}
+
+measure: transaction_revenue_yoy_evol {
+  label: "YoY evol. Conversion Revenue"
+  type: number
+  sql: (nullif(${current_transaction_revenue},0)-nullif(${previous_transaction_revenue},0))/nullif(${previous_transaction_revenue},0) ;;
+  value_format: "0.00%"
+}
+
 }
