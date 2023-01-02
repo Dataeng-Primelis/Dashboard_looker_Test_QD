@@ -119,7 +119,7 @@ view: common_metrics {
   filter: choose_date{
     #templated filter
     type: date
-    #sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
+    sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
   }
 
   parameter: compare_to {
