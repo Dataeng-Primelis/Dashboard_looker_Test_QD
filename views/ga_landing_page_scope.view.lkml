@@ -94,6 +94,13 @@ view: ga_landing_page_scope {
           END;;
   }
 
+  dimension: source_medium_group1 {
+    label: "Precised Source Medium Group"
+    description: "Source Medium group"
+    type: string
+    sql: concat(${source},"/",${medium});;
+  }
+
   dimension: ga_univers_catalog_lv1 {
     label: "Universal Catalog Lvl 1"
     description: "Universal catalog on 1st level : Femme / Homme / Enfant / Beauté / Maison / Autre"
