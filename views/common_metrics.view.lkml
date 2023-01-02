@@ -119,7 +119,7 @@ view: common_metrics {
   filter: choose_date{
     #templated filter
     type: date
-    sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
+    #sql:  {% condition choose_date %}  timestamp(${session_date}) {% endcondition %} ;;
   }
 
   parameter: compare_to {
@@ -139,7 +139,7 @@ view: common_metrics {
   }
 
   dimension_group: days_in_period {
-    hidden: no
+    hidden: yes
     type: duration
     intervals: [day,month,year]
     sql_start:{% date_start choose_date %}  ;;
