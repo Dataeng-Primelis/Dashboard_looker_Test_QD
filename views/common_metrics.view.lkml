@@ -235,30 +235,30 @@ view: common_metrics {
   }
 
   measure: transaction_revenue_yoy_evol {
-    label: "YoY evol. Conversion Revenue"
+    label: "Evol. Conversion Revenue"
     type: number
     sql: 1.0*(${current_transaction_revenue}-${previous_transaction_revenue})/nullif(${previous_transaction_revenue},0) ;;
     value_format: "0.00%"
   }
 
   measure: current_item_revenue {
-    label: "Item Revenues of Current Year"
+    label: "Current Item Revenues"
     type: sum
     sql: ${TABLE}.item_revenue ;;
     value_format_name : eur_0
-    filters: [selected_period: "Current Year"]
+    filters: [selected_period: "%Current%"]
   }
 
   measure: previous_item_revenue {
-    label: "Item Revenues of Previous Year"
+    label: "Previous Item Revenues"
     type: sum
     sql: ${TABLE}.item_revenue ;;
     value_format_name : eur_0
-    filters: [selected_period: "Previous Year"]
+    filters: [selected_period: "%Previous%"]
   }
 
   measure: item_revenue_yoy_evol {
-    label: "YoY evol. Item Revenue"
+    label: "Evol. Item Revenue"
     type: number
     sql: 1.0*(${current_item_revenue}-${previous_item_revenue})/nullif(${previous_item_revenue},0) ;;
     value_format: "0.00%"
