@@ -127,14 +127,22 @@ view: common_metrics {
     label: "Date Range Comparison"
     description: "Select the templated previous period you would like to compare to"
     type: unquoted
-    default_value: "previous_period"
-    allowed_value: {
-      value: "previous_period"
-      label: "vs Previous Period"
-    }
+    default_value: "previous_year"
     allowed_value: {
       value: "previous_year"
       label: "vs Previous Year"
+    }
+    allowed_value: {
+      value: "previous_month"
+      label: "vs Previous Month"
+    }
+    allowed_value: {
+      value: "previous_week"
+      label: "vs Previous Week"
+    }
+    allowed_value: {
+      value: "previous_period"
+      label: "vs Previous Period"
     }
   }
 
@@ -169,6 +177,29 @@ view: common_metrics {
            end ;;
   }
 
+# This dimension creates the interval related to the current period and the previous year period.
+  dimension: current_month_vs_previous_month {
+    label: "Current Month vs Previous Month"
+    description: "Compare current month period versus month"
+    hidden: yes
+    type: string
+    sql:  case when {% condition choose_date %} timestamp(${session_date}) {% endcondition %} then 'Current Month'
+                when ${session_date} > (date_sub(date({% date_start choose_date %}),INTERVAL 1 month ))
+                 and ${session_date} <= (date_sub(date({% date_end choose_date %}),INTERVAL 1 month )) then 'Previous Month'
+           end ;;
+  }
+
+# This dimension creates the interval related to the current period and the previous year period.
+  dimension: current_week_vs_previous_week {
+    label: "Current Week vs Previous Week"
+    description: "Compare current week period versus week"
+    hidden: yes
+    type: string
+    sql:  case when {% condition choose_date %} timestamp(${session_date}) {% endcondition %} then 'Current Week'
+                when ${session_date} > (date_sub(date({% date_start choose_date %}),INTERVAL 1 week ))
+                 and ${session_date} <= (date_sub(date({% date_end choose_date %}),INTERVAL 1 week )) then 'Previous Week'
+           end ;;
+  }
 
   # This dimension is the one that should be selected in the explore/dashboard tile that's depend on the user's choice will show
   # the comparison between Previous Period or Previous Year Same period.
@@ -178,6 +209,8 @@ view: common_metrics {
     type: string
     sql: {% if compare_to._parameter_value == 'previous_period' %} ${current_vs_previous}
           {% elsif compare_to._parameter_value == 'previous_year' %} ${current_year_vs_previous_year}
+          {% elsif compare_to._parameter_value == 'previous_month' %} ${current_month_vs_previous_month}
+          {% elsif compare_to._parameter_value == 'previous_week' %} ${current_week_vs_previous_week}
           {% else %} ${current_vs_previous}
           {% endif %}
      ;;
@@ -186,25 +219,25 @@ view: common_metrics {
 
 ############### Period Comparaison Set Up #######################
   measure: current_transaction_revenue {
-    label: "Conversion Revenues of Current Year"
+    label: "Current Conversion Revenues"
     type: sum
     sql: ${TABLE}.transaction_revenue ;;
     value_format_name : eur_0
-    filters: [selected_period: "Current Year"]
+    filters: [selected_period: "%Current%"]
   }
 
   measure: previous_transaction_revenue {
-    label: "Conversion Revenues of Previous Year"
+    label: "Previous Conversion Revenues"
     type: sum
     sql: ${TABLE}.transaction_revenue ;;
     value_format_name : eur_0
-    filters: [selected_period: "Previous Year"]
+    filters: [selected_period: "%Previous%"]
   }
 
   measure: transaction_revenue_yoy_evol {
     label: "YoY evol. Conversion Revenue"
     type: number
-    sql: (nullif(${current_transaction_revenue},0)-nullif(${previous_transaction_revenue},0))/nullif(${previous_transaction_revenue},0) ;;
+    sql: 1.0*(${current_transaction_revenue}-${previous_transaction_revenue})/nullif(${previous_transaction_revenue},0) ;;
     value_format: "0.00%"
   }
 
@@ -227,7 +260,7 @@ view: common_metrics {
   measure: item_revenue_yoy_evol {
     label: "YoY evol. Item Revenue"
     type: number
-    sql: (nullif(${current_item_revenue},0)-nullif(${previous_item_revenue},0))/nullif(${previous_item_revenue},0) ;;
+    sql: 1.0*(${current_item_revenue}-${previous_item_revenue})/nullif(${previous_item_revenue},0) ;;
     value_format: "0.00%"
   }
 
