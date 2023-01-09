@@ -173,4 +173,14 @@ view: search_console_standard {
     drill_fields: []
   }
 
+### Exclud KPI measures
+  set: exclud_metrics {
+    fields: [total_item_revenues
+      , current_item_revenue
+      , previous_item_revenue
+      , item_revenue_yoy_evol
+      , ]
+  }
+
+
 }

@@ -6,5 +6,6 @@ explore: ga_landing_page_scope {
   description: "Google Analytics landing Page Data"
   # join: parameters {}
 
-  fields: [ALL_FIELDS*,-total_clicks,-total_impressions]
+  fields: [ALL_FIELDS*
+    ,-ga_landing_page_scope.exclud_metrics*]
 }

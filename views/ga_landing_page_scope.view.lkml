@@ -101,6 +101,13 @@ view: ga_landing_page_scope {
     sql: concat(${source},"/",${medium});;
   }
 
+  dimension: seo_vs_autre {
+    label: "SEO VS Other"
+    description: "SEO VS Other Funnels"
+    type: string
+    sql: CASE WHEN ${medium}="organic" THEN "SEO" ELSE "Autres Canaux" END;;
+  }
+
   dimension: ga_univers_catalog_lv1 {
     label: "Universal Catalog Lvl 1"
     description: "Universal catalog on 1st level : Femme / Homme / Enfant / Beauté / Maison / Autre"
@@ -165,5 +172,15 @@ view: ga_landing_page_scope {
     hidden: yes
     drill_fields: []
   }
+
+### Exclud KPI measures
+  set: exclud_metrics {
+    fields: [total_item_revenues
+      , current_item_revenue
+      , previous_item_revenue
+      , item_revenue_yoy_evol
+      ]
+  }
+
 
 }

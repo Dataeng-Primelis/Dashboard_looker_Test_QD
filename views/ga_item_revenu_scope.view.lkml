@@ -80,5 +80,11 @@ view: ga_item_revenu_scope {
     drill_fields: []
   }
 
+### Exclud KPI measures
+  # set: exclud_metrics {
+  #   fields: [total_clicks
+  #     ,]
+  # }
+
 
 }
